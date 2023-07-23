@@ -21,5 +21,10 @@
     <true/>
     <key>KeepAlive</key>
     <true/>
+
+    <key>StandardOutPath</key>
+    <string>{{log_path}}/denops-stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>{{log_path}}/denops-stderr.log</string>
   </dict>
 </plist>

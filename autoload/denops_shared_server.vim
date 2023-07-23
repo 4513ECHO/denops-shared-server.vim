@@ -15,8 +15,8 @@ function! denops_shared_server#install() abort
         \ 'port': port,
         \}
   call denops_shared_server#{command}#install(options)
-  call denops_shared_server#util#info('wait 5 second for the shared server startup...')
-  sleep 5
+  call denops_shared_server#util#info('wait for the shared server startup...')
+  call denops#server#wait()
   call denops_shared_server#util#info('connect to the shared server')
   call denops#server#connect()
   call denops_shared_server#util#info('stop the local server')

@@ -13,6 +13,7 @@ function! denops_shared_server#launchctl#install(options) abort
         \ 'port': a:options.port,
         \ 'deno_args': join(map(copy(g:denops#server#deno_args),
         \   { _, val -> printf('<string>%s</string>', val) }), "\n"),
+        \ 'log_path': $XDG_STATE_HOME .. '/nvim',
         \})
   call denops_shared_server#util#info(printf('create the plist `%s`', s:plist_file))
   call mkdir(fnamemodify(s:plist_file, ':h'), 'p')
@@ -23,6 +24,11 @@ function! denops_shared_server#launchctl#install(options) abort
 
   call denops_shared_server#util#info(printf('load the plist `%s`', s:plist_file))
   echo system(printf('launchctl load -w %s', s:plist_file))
+
+  call denops_shared_server#util#info('sync environment variables')
+  for [key, val] in items(environ())
+    echo system(printf('launchctl setenv %s %s', key, shellescape(val)))
+  endfor
 endfunction
 
 function! denops_shared_server#launchctl#uninstall() abort
@@ -39,4 +45,9 @@ function! denops_shared_server#launchctl#restart() abort
 
   call denops_shared_server#util#info(printf('load the plist `%s`', s:plist_file))
   echo system(printf('launchctl load -w %s', s:plist_file))
+
+  call denops_shared_server#util#info('sync environment variables')
+  for [key, val] in items(environ())
+    echo system(printf('launchctl setenv %s %s', key, shellescape(val)))
+  endfor
 endfunction
